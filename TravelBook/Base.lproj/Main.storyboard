@@ -18,21 +18,39 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aza-Sf-HiE">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="219" width="393" height="599"/>
                                 <standardMapConfiguration key="preferredConfiguration"/>
                             </mapView>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qcn-cy-YOp">
+                                <rect key="frame" x="16" y="100" width="361" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="comment" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tF5-CZ-cu8">
+                                <rect key="frame" x="16" y="152" width="361" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="3NM-Gg-hqm"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Aza-Sf-HiE" secondAttribute="trailing" id="4d2-1r-8FE"/>
-                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Auw-xG-r8O"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Aza-Sf-HiE" secondAttribute="bottom" id="QmL-Uc-Vs7"/>
+                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="top" secondItem="tF5-CZ-cu8" secondAttribute="bottom" constant="33" id="505-4W-UkX"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="trailing" secondItem="tF5-CZ-cu8" secondAttribute="trailing" id="HVH-nS-4A4"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="41" id="IOp-hq-lX8"/>
+                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="My2-Y8-89c"/>
+                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Ygt-z7-xN0"/>
+                            <constraint firstItem="tF5-CZ-cu8" firstAttribute="centerX" secondItem="Aza-Sf-HiE" secondAttribute="centerX" id="ejJ-Qc-x0s"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="h36-43-MOy"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="leading" secondItem="tF5-CZ-cu8" secondAttribute="leading" id="nsE-vY-HUx"/>
+                            <constraint firstItem="tF5-CZ-cu8" firstAttribute="top" secondItem="qcn-cy-YOp" secondAttribute="bottom" constant="18" id="xLp-KF-NbQ"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="zqI-kK-KSt"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="commentText" destination="tF5-CZ-cu8" id="0BO-3u-VEb"/>
                         <outlet property="mapView" destination="Aza-Sf-HiE" id="2cl-Zp-FTI"/>
+                        <outlet property="nameText" destination="qcn-cy-YOp" id="RCh-I6-fuf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
