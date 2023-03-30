@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aza-Sf-HiE">
-                                <rect key="frame" x="0.0" y="219" width="393" height="599"/>
+                                <rect key="frame" x="0.0" y="219" width="393" height="523"/>
                                 <standardMapConfiguration key="preferredConfiguration"/>
                             </mapView>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qcn-cy-YOp">
@@ -31,20 +31,34 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S0C-Pl-I1I">
+                                <rect key="frame" x="139" y="750" width="115" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="D63-3Z-gLm"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Save"/>
+                                <connections>
+                                    <action selector="save:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fbG-GQ-kKU"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="top" secondItem="tF5-CZ-cu8" secondAttribute="bottom" constant="33" id="505-4W-UkX"/>
-                            <constraint firstItem="qcn-cy-YOp" firstAttribute="trailing" secondItem="tF5-CZ-cu8" secondAttribute="trailing" id="HVH-nS-4A4"/>
-                            <constraint firstItem="qcn-cy-YOp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="41" id="IOp-hq-lX8"/>
-                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="My2-Y8-89c"/>
-                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Ygt-z7-xN0"/>
-                            <constraint firstItem="tF5-CZ-cu8" firstAttribute="centerX" secondItem="Aza-Sf-HiE" secondAttribute="centerX" id="ejJ-Qc-x0s"/>
-                            <constraint firstItem="qcn-cy-YOp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="h36-43-MOy"/>
-                            <constraint firstItem="qcn-cy-YOp" firstAttribute="leading" secondItem="tF5-CZ-cu8" secondAttribute="leading" id="nsE-vY-HUx"/>
-                            <constraint firstItem="tF5-CZ-cu8" firstAttribute="top" secondItem="qcn-cy-YOp" secondAttribute="bottom" constant="18" id="xLp-KF-NbQ"/>
-                            <constraint firstItem="qcn-cy-YOp" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="zqI-kK-KSt"/>
+                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="centerX" secondItem="S0C-Pl-I1I" secondAttribute="centerX" id="8wo-5q-cIX"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="41" id="ArL-1K-npa"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="S0C-Pl-I1I" secondAttribute="bottom" constant="18" id="BcX-KC-4Bs"/>
+                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="top" secondItem="tF5-CZ-cu8" secondAttribute="bottom" constant="33" id="G9R-tT-08A"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="trailing" secondItem="tF5-CZ-cu8" secondAttribute="trailing" id="T9I-AI-B3U"/>
+                            <constraint firstItem="Aza-Sf-HiE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WRd-ak-dxK"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="cno-ZJ-sMk"/>
+                            <constraint firstItem="tF5-CZ-cu8" firstAttribute="centerX" secondItem="Aza-Sf-HiE" secondAttribute="centerX" id="dEn-Q6-NiD"/>
+                            <constraint firstItem="S0C-Pl-I1I" firstAttribute="top" secondItem="Aza-Sf-HiE" secondAttribute="bottom" constant="8" id="dyH-pR-g3S"/>
+                            <constraint firstItem="tF5-CZ-cu8" firstAttribute="top" secondItem="qcn-cy-YOp" secondAttribute="bottom" constant="18" id="hgl-IM-vmk"/>
+                            <constraint firstItem="S0C-Pl-I1I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="139" id="m05-L5-FMe"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="leading" secondItem="tF5-CZ-cu8" secondAttribute="leading" id="pbk-N6-jQu"/>
+                            <constraint firstItem="qcn-cy-YOp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="sEU-Sw-Qvd"/>
                         </constraints>
                     </view>
                     <connections>
