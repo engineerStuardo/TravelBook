@@ -24,8 +24,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         
-        let rightButon = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlace))
-        navigationItem.setRightBarButton(rightButon, animated: true)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlace))
         
         getData()
     }
@@ -93,8 +92,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toViewController" {
             let destination = segue.destination as! ViewController
-            destination.placeTitle = selectedTitle
-            destination.placeId = selectedId
+            destination.name = selectedTitle
+            destination.id = selectedId
         }
     }
 }

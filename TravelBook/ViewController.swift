@@ -17,134 +17,133 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var commentText: UITextField!
     @IBOutlet weak var mapView: MKMapView!
     
-    var locationManager = CLLocationManager()
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
-    var placeTitle: String = ""
-    var placeSubtitle: String = ""
-    var placeId = UUID()
+    let locationManager = CLLocationManager()
+    var latitude = 0.0
+    var longitude = 0.0
+    var name = ""
+    var id = UUID()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        mapView.delegate = self
         locationManager.delegate = self
         
-        let keyboardGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        self.view.addGestureRecognizer(keyboardGestureRecognizer)
-        
-        if placeTitle != "" {
+        if name != "" {
             let delegate = UIApplication.shared.delegate as! AppDelegate
             let context = delegate.persistentContainer.viewContext
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Places")
             fetchRequest.returnsObjectsAsFaults = false
-            fetchRequest.predicate = NSPredicate(format: "id= %@", placeId.uuidString)
+            fetchRequest.predicate = NSPredicate(format: "id= %@", id.uuidString)
             
             do {
                 let results = try context.fetch(fetchRequest)
                 for result in results as! [NSManagedObject] {
-                    if let title = result.value(forKey: "title") as? String {
-                        nameText.text = title
+                    if let name = result.value(forKey: "title") as? String {
+                        nameText.text = name
                     }
-                    
                     if let comment = result.value(forKey: "subtitle") as? String {
                         commentText.text = comment
-                        placeSubtitle = comment
+                    }
+                    if let lat = result.value(forKey: "latitude") as? Double, let lng = result.value(forKey: "longitude") as? Double {
+                        longitude = lng
+                        latitude = lat
+                        showLocation(lat: lat, lng: lng)
+                        showPin(lat: lat, lng: lng)
                     }
                     
-                    if let lat = result.value(forKey: "latitude") as? Double, let lng = result.value(forKey: "longitude") as? Double {
-                        let addAnnotation = MKPointAnnotation()
-                        addAnnotation.title = placeTitle
-                        addAnnotation.subtitle = placeSubtitle
-                        addAnnotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-                        self.mapView.addAnnotation(addAnnotation)
-                        focusLocation(lat: lat, lng: lng)
-                    }
+                    nameText.isEnabled = false
+                    commentText.isEnabled = false
+                    saveButton.isHidden = true
                 }
-                saveButton.isHidden = true
-                nameText.isEnabled = false
-                commentText.isEnabled = false
             } catch {
                 print("Error")
             }
+            
         } else {
-            nameText.text = ""
-            commentText.text = ""
-            latitude = 0.0
-            longitude = 0.0
-            
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestWhenInUseAuthorization()
-            locationManager.startUpdatingLocation()
-            
-            let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(chooseLocation(gestureRecognizer:)))
-            gestureRecognizer.minimumPressDuration = 3
-            mapView.addGestureRecognizer(gestureRecognizer)
+            configuringLocation()
+            addGestureRecognizerToView()
+            addLongPressGestureToMapView()
         }
+        
+    }
+    
+    func addLongPressGestureToMapView() {
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(chooseLocation(sender:)))
+        gesture.minimumPressDuration = 3
+        mapView.addGestureRecognizer(gesture)
+    }
+    
+    func configuringLocation() {
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+    }
+    
+    func addGestureRecognizerToView() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        self.view.addGestureRecognizer(gesture)
     }
     
     @objc func hideKeyboard() {
         self.view.endEditing(true)
     }
     
-    @objc func chooseLocation(gestureRecognizer: UILongPressGestureRecognizer) {
-        if gestureRecognizer.state == .began {
-            let touchedPoint = gestureRecognizer.location(in: self.mapView)
-            let touchedCoordinates = self.mapView.convert(touchedPoint, toCoordinateFrom: self.mapView)
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = touchedCoordinates
-            annotation.title = nameText.text
-            annotation.subtitle = commentText.text
-            self.mapView.addAnnotation(annotation)
+    @objc func chooseLocation(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            let touchLocation = sender.location(in: mapView)
+            let coordinates = mapView.convert(touchLocation, toCoordinateFrom: self.mapView)
             
-            latitude = touchedCoordinates.latitude
-            longitude = touchedCoordinates.longitude
+            showPin(lat: coordinates.latitude, lng: coordinates.longitude)
+            
+            longitude = coordinates.longitude
+            latitude = coordinates.latitude
         }
+    }
+    
+    func showPin(lat: Double, lng: Double){
+        let annotation = MKPointAnnotation()
+        annotation.title = nameText.text
+        annotation.subtitle = commentText.text
+        annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+        mapView.addAnnotation(annotation)
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        focusLocation(lat: locations[0].coordinate.latitude, lng: locations[0].coordinate.longitude)
+        showLocation(lat: locations[0].coordinate.latitude, lng: locations[0].coordinate.longitude)
     }
     
-    func focusLocation(lat: Double, lng: Double){
-        let location = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+    func showLocation(lat: Double, lng: Double) {
+        let center = CLLocationCoordinate2D(latitude: lat, longitude: lng)
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        let region = MKCoordinateRegion(center: location, span: span)
+        let region = MKCoordinateRegion(center: center, span: span)
         mapView.setRegion(region, animated: true)
     }
-
+    
     @IBAction func save(_ sender: Any) {
-        if nameText.text != "", commentText.text != "", latitude != 0.0, longitude != 0.0 {
-            let delegate = UIApplication.shared.delegate as! AppDelegate
-            let context = delegate.persistentContainer.viewContext
-            
-            let newPlace = NSEntityDescription.insertNewObject(forEntityName: "Places", into: context)
-            newPlace.setValue(nameText.text, forKey: "title")
-            newPlace.setValue(commentText.text, forKey: "subtitle")
-            newPlace.setValue(UUID(), forKey: "id")
-            newPlace.setValue(latitude, forKey: "latitude")
-            newPlace.setValue(longitude, forKey: "longitude")
-            
-            do{
-                try context.save()
-                let alert = UIAlertController(title: "Successfuly", message: "Place successfuly saved", preferredStyle: .alert)
-                let okButton = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.navigationController?.popViewController(animated: true)
-                }
-                alert.addAction(okButton)
-                self.present(alert, animated: true)
-            } catch {
-                print("Error")
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+        
+        let newPlace = NSEntityDescription.insertNewObject(forEntityName: "Places", into: context)
+        newPlace.setValue(UUID(), forKey: "id")
+        newPlace.setValue(nameText.text, forKey: "title")
+        newPlace.setValue(commentText.text, forKey: "subtitle")
+        newPlace.setValue(latitude, forKey: "latitude")
+        newPlace.setValue(longitude, forKey: "longitude")
+        
+        do {
+            try context.save()
+            print("Success")
+            let alert = UIAlertController(title: "Success", message: "Place added successfuly", preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "Ok", style: .default) { _ in
+                self.navigationController?.popViewController(animated: true)
             }
-        } else {
-            let alert = UIAlertController(title: "Incomplete information", message: "Please fill all the information or choose a point in the map by holding tap for 3 seconds", preferredStyle: .alert)
-            let okButton = UIAlertAction(title: "Ok", style: .default)
             alert.addAction(okButton)
             self.present(alert, animated: true)
+        } catch {
+            print("Error")
         }
     }
-    
 }
 
