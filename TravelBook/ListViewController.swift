@@ -87,6 +87,32 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let delegate = UIApplication.shared.delegate as! AppDelegate
+            let context = delegate.persistentContainer.viewContext
+            
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Places")
+            fetchRequest.returnsObjectsAsFaults = false
+            fetchRequest.predicate = NSPredicate(format: "id= %@", idArray[indexPath.row].uuidString)
+            
+            do {
+                let results = try context.fetch(fetchRequest)
+                for result in results as! [NSManagedObject] {
+                    do {
+                        context.delete(result)
+                        try context.save()
+                    } catch {
+                        print("Error")
+                    }
+                }
+            } catch {
+                print("Error")
+            }
+            
+            titleArray.remove(at: indexPath.row)
+            idArray.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
